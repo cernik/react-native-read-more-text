@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 
 export default class ReadMore extends React.Component {
   state = {
@@ -32,21 +32,26 @@ export default class ReadMore extends React.Component {
     let { numberOfLines } = this.props;
 
     return (
-      <View>
-        <Text
-          numberOfLines={measured && !showAllText ? numberOfLines : 0}
-          ref={text => {
-            this._text = text;
-          }}
-          style={[this.props.textContanerStyle]}>
-          {this.props.children}
-        </Text>
+      <TouchableWithoutFeedback onPress={this._handlePressContainer}>
+        <View>
+          <Text
+            numberOfLines={measured && !showAllText ? numberOfLines : 0}
+            ref={text => {
+              this._text = text;
+            }}
+            style={[this.props.textContanerStyle]}>
+            {this.props.children}
+          </Text>
 
-        {this._maybeRenderReadMore()}
-      </View>
+          {this._maybeRenderReadMore()}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
-
+  _handlePressContainer = () => {
+    const showAllText = !this.state.showAllText;
+    this.setState({ showAllText });
+  };
   _handlePressReadMore = () => {
     this.setState({ showAllText: true });
   };
